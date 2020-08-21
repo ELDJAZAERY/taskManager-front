@@ -9,9 +9,9 @@ module.exports = {
   "menu.dashboards": "Dashboards",
   "menu.dashboard": "Dashboard",
   "menu.users": "Users",
-  "menu.managment": "Manager",
-  "menu.provider": "Provider",
   "menu.account": "Account",
+  "menu.tasks" : "Tasks",
+  "menu." : " ",
 
   /* 03.Pages */
   "pages.add-new": "Add +",

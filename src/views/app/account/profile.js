@@ -18,8 +18,6 @@ import Select from 'react-select';
 
 import { Grid } from '@material-ui/core';
 
-import Breadcrumb from '../../../containers/navs/Breadcrumb';
-
 import { Separator, Colxx } from '../../../components/common/CustomBootstrap';
 
 import CustomSelectInput from '../../../components/common/CustomSelectInput';
@@ -32,7 +30,7 @@ import Moment from 'moment';
 
 import { objectEquals } from '../helpers/data.helpers';
 
-import { OWNER_ROLES } from '../constants/lists';
+import { ROLES } from '../constants/lists';
 
 import { systemNotif } from '../../../redux/actions';
 import { actionsEnum, typesEnum } from '../../../redux/notifications/enums';
@@ -112,7 +110,7 @@ class KnowledgeBase extends Component {
   };
 
   selectedValue = value => {
-    for (let cat of OWNER_ROLES) {
+    for (let cat of ROLES) {
       if (cat.value === value) return cat;
     }
     return undefined;
@@ -289,7 +287,7 @@ class KnowledgeBase extends Component {
                                           'role'
                                         );
                                       }}
-                                      options={OWNER_ROLES}
+                                      options={ROLES}
                                     />
                                   ) : (
                                     <Input

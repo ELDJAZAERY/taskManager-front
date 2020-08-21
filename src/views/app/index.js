@@ -8,6 +8,11 @@ const AdminPanel = React.lazy(() =>
   import(/* webpackChunkName: "viwes-gogo" */ './dashboard')
 );
 
+const Tasks = React.lazy(() =>
+  import(/* webpackChunkName: "viwes-blank-page" */ './tasksManager')
+);
+
+
 const Profile = React.lazy(() =>
   import(/* webpackChunkName: "viwes-blank-page" */ './account/profile')
 );
@@ -39,6 +44,10 @@ class App extends Component {
               <Route
                 path={`${match.url}/profile`}
                 render={props => <Profile {...props} />}
+              />
+              <Route
+                path={`${match.url}/tasks`}
+                render={props => <Tasks {...props} />}
               />
               <Redirect to='/error' />
             </Switch>

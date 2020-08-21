@@ -10,7 +10,7 @@ const Footer = () => {
           <Row>
             <Colxx xxs='12' sm='6'>
               <p className='mb-0 text-muted'>
-                ATLL MAP Copyright © {new Date().getFullYear()}
+                ELDJAZAERY - KPMG Copyright © {new Date().getFullYear()}
               </p>
             </Colxx>
           </Row>

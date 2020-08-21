@@ -1,0 +1,133 @@
+:root {
+  --primary-color: rgb(62, 100, 255);
+  --complete-color: #27aa80;
+  --text-color: #172b4d;
+  --disabled-color: #fad6d6;
+  --background-color: #3d3b3d;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                      supported by Chrome, Opera and Firefox */
+}
+
+input:focus {
+  outline: none;
+}
+
+select {
+  outline: none;
+  height: 40px;
+}
+
+.rows {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.item {
+  font-size: 15px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 1;
+  background-color: #e6e7e8;
+}
+
+.item:hover {
+  cursor: pointer;
+}
+
+.item-title {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.item-status {
+  text-align: right;
+  float: right;
+  font-size: large;
+}
+
+.color-bar {
+  width: 40px;
+  height: 10px;
+  border-radius: 5px;
+}
+
+.drop-wrapper {
+  flex: 1 25%;
+  width: 100%;
+  height: 100%;
+}
+
+.col-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  padding: 20px;
+  background-color: var(--background-color);
+  border-radius: 20px;
+}
+
+.col-header {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.column {
+  min-height: 300px;
+  max-width: 300px;
+  width: 300px;
+}
+
+.highlight-region {
+  background-color: #5c585c;
+}
+
+
+.taskModal {
+  margin: 48px 0 80px; 
+  background-color: #d9d7d9;
+  border-radius: 2px;
+  min-height: 450px;
+  width: 800px;
+  outline: none;
+  padding: 20px;
+}
+
+.overlay {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.close-btn-ctn {
+  display: flex;
+}
+
+.close-btn {
+  height: 40px;
+  width: 35px;
+  font-size: 20px;
+  color: #031d2c;
+  border: none;
+  border-radius: 25px;
+}
+
+.close-btn:hover {
+  background-color: #dcdcdc;
+}
