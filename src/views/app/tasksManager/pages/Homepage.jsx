@@ -8,12 +8,10 @@ const Homepage = () => {
   const [items, setItems] = useState(data);
 
   const onDrop = (item, monitor, status) => {
-    const mapping = statuses.find((si) => si.status === status);
-
     setItems((prevState) => {
       const newItems = prevState
         .filter((i) => i.id !== item.id)
-        .concat({ ...item, status, icon: mapping.icon });
+        .concat({ ...item, status });
       return [...newItems];
     });
   };

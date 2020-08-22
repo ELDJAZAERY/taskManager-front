@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Fab } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 
-import AddTask from './addTask'
+import CreateTaskForm from './CreateTaskForm'
 
 const Col = ({ status, isOver, children, connectedUser }) => {
   const className = isOver ? " highlight-region" : "";
@@ -33,7 +33,7 @@ const Col = ({ status, isOver, children, connectedUser }) => {
 
           {children}
         </div>
-        <AddTask onClose={onClose} show={show} />
+        <CreateTaskForm onClose={onClose} show={show} />
       </React.Fragment>
     );
 

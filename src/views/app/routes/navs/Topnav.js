@@ -241,10 +241,6 @@ class TopNav extends Component {
 
           <div className="d-inline-block"></div>
         </div>
-        <a className="navbar-logo" href="/">
-          <span className="logo d-none d-xs-block" />
-          <span className="logo-mobile d-block d-xs-none" />
-        </a>
         <div className="navbar-right">
           <div className="header-icons d-inline-block align-middle">
             <button

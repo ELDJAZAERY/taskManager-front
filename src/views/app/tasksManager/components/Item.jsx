@@ -11,6 +11,10 @@ import Typography from "@material-ui/core/Typography";
 import { CardTitle } from "reactstrap";
 import { Grid } from "@material-ui/core";
 
+import Moment from "moment";
+
+import { getIcon } from '../helper';
+
 const Item = ({ item, index, moveItem, status }) => {
   const ref = useRef(null);
 
@@ -45,7 +49,7 @@ const Item = ({ item, index, moveItem, status }) => {
   });
 
   const [{ isDragging }, drag] = useDrag({
-    item: { type: "task", ...item, index },
+    item: { type: "task",...item, index },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -102,23 +106,14 @@ export const TaskCard = ({ item, status }) => {
           width: "100%",
         }}
       >
-        <Grid item xs={2}>
+        <Grid item xs={6}>
           <div
             className={"color-bar"}
             style={{ backgroundColor: status.color }}
           />
         </Grid>
-        <Grid item xs={3}>
-          <Typography
-            className={classes.title}
-            color="textSecondary"
-            gutterBottom
-          >
-            {item.for}
-          </Typography>
-        </Grid>
         <Grid item xs={6}>
-          <p className="item-status">{item.icon}</p>
+          <p className="item-status">{getIcon(item)}</p>
         </Grid>
       </Grid>
       <CardTitle className={classes.title}>{item.title}</CardTitle>
@@ -143,7 +138,7 @@ export const TaskCard = ({ item, status }) => {
               style={{ float: "right" }}
               gutterBottom
             >
-              {new Date().toLocaleDateString()}
+              {Moment(new Date()).format("DD-MM-YYYY")}
             </Typography>
           </Grid>
         </Grid>

@@ -23,7 +23,7 @@ class App extends Component {
 
     const isAdmin = loginUser.role === 'Admin';
 
-    const homePage = isAdmin ? 'dashboard' : 'profile';
+    const homePage = "tasks";
 
     return (
       <AppLayout>
