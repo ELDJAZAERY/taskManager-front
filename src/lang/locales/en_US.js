@@ -10,8 +10,8 @@ module.exports = {
   "menu.dashboard": "Dashboard",
   "menu.users": "Users",
   "menu.account": "Account",
-  "menu.tasks" : "Tasks",
-  "menu." : " ",
+  "menu.tasks": "Tasks",
+  "menu.": " ",
 
   /* 03.Pages */
   "pages.add-new": "Add +",
@@ -60,7 +60,7 @@ module.exports = {
   "user.send-confirmation-mail": "Confirm your email ...",
   "user.isMailConfirmed": "email Confirmed",
   "user.forgetPassport": "Reset Password",
-  "user.reset.password.sent": "Password reset email has been successfully sent",
+  "user.reset.password.sent": "successfully sent",
 
   "user.login.email": "Identificator / email",
   "user.password": "Password",
@@ -81,7 +81,6 @@ module.exports = {
   "user.change.password": "Change Password",
 
   "user.email-validation-message":
-    "Look for the verification email in your inbox and click the link in that email.",
-  "user.admin-validation-message":
-    "A manual validation is required, (it takes 2 working days)",
+    "If you do not receive a confirmation email, please check your spam folder.",
+  "user.admin-validation-message": "",
 };

@@ -1,27 +1,33 @@
-import React, { Component } from 'react';
-import { Row, Card, CardTitle, Label, Input, Button } from 'reactstrap';
-import { NavLink } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { Row, Card, CardTitle, Label, Input, Button } from "reactstrap";
+import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
 
-import IntlMessages from '../../helpers/IntlMessages';
-import { Colxx } from '../../components/common/CustomBootstrap';
-import { fetchRegister } from '../../api/auth';
+import IntlMessages from "../../helpers/IntlMessages";
+import { Colxx } from "../../components/common/CustomBootstrap";
+import { fetchRegister } from "../../api/auth";
 
-import { systemNotif } from '../../redux/actions';
-import { actionsEnum, typesEnum } from '../../redux/notifications/enums';
+import { systemNotif } from "../../redux/actions";
+import { actionsEnum, typesEnum } from "../../redux/notifications/enums";
+
+import Select from "react-select";
+import CustomSelectInput from "../../components/common/CustomSelectInput";
+import { PROFILE } from "../app/constants/lists";
 
 const initialState = {
-  identificator: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
+  identificator: "",
+  email: "",
+  role: "",
+  password: "",
+  confirmPassword: "",
   success: false,
   errors: {
-    identificator: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  }
+    identificator: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    role: ""
+  },
 };
 
 class Register extends Component {
@@ -38,8 +44,8 @@ class Register extends Component {
       [tag]: validateValue,
       errors: {
         ...this.state.errors,
-        [tag]: error
-      }
+        [tag]: error,
+      },
     });
   };
 
@@ -54,37 +60,39 @@ class Register extends Component {
     return [undefined, value];
   };
 
-  mailValidator = email => {
-    if (!email || email.length === 0) return [undefined, ''];
+  mailValidator = (email) => {
+    if (!email || email.length === 0) return [undefined, ""];
     const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     const validate = re.test(String(email).toLowerCase());
-    return [validate ? undefined : 'Invalid email format', email];
+    return [validate ? undefined : "Invalid email format", email];
   };
 
-  matchPasswordValidator = confirmPassword => {
+  matchPasswordValidator = (confirmPassword) => {
     let errMessage =
       confirmPassword !== this.state.password
-        ? 'Password are not matching'
+        ? "Password are not matching"
         : undefined;
     return [errMessage, confirmPassword];
   };
 
-  submitUser = async () => {
+  register = async () => {
     const {
       errors,
       identificator,
       email,
+      role,
       password,
-      confirmPassword
+      confirmPassword,
     } = this.state;
 
-    if (JSON.stringify(errors) !== '{}') return;
+    if (JSON.stringify(errors) !== "{}") return;
 
     const user = {
       identificator,
       email,
+      role,
       password,
-      confirmPassword
+      confirmPassword,
     };
 
     try {
@@ -94,77 +102,85 @@ class Register extends Component {
       this.props.systemNotif(actionsEnum.PUSH, typesEnum.SUCCESS, message);
       this.setState({
         ...initialState,
-        success: true
+        success: true,
       });
     } catch ({ status, errMessage }) {
       this.props.systemNotif(actionsEnum.PUSH, typesEnum.ERROR, errMessage);
     }
   };
 
+  selectedValue = value => {
+    for (let cat of PROFILE) {
+      if (cat.value === value) return cat;
+    }
+    return undefined;
+  };
+
   render() {
     const {
       identificator,
       email,
+      role,
       password,
       confirmPassword,
       errors,
-      success
+      success,
     } = this.state;
     return (
-      <Row className='h-100'>
-        <Colxx xxs='12' md='8' className='mx-auto my-auto'>
-          <Card className='auth-card'>
-            <div className='position-relative image-side '>
-              <NavLink to={`/`} className='white'>
-                <span className='logo-single' />
+      <Row className="h-100">
+        <Colxx xxs="12" md="8" className="mx-auto my-auto">
+          <Card className="auth-card">
+            <div className="position-relative image-side ">
+              <NavLink to={`/`} className="white">
+                <span className="logo-single" />
               </NavLink>
               <div
                 style={{
-                  color: 'white',
-                  fontSize: '15px',
-                  marginBottom: '15px'
+                  color: "white",
+                  fontSize: "15px",
+                  marginBottom: "15px",
                 }}
               >
-                {' Login here '}
+                {" Login here "}
                 <Button
                   to={`/user/login`}
-                  className='white'
-                  onClick={() => this.props.history.push('/user/login')}
+                  className="white"
+                  onClick={() => this.props.history.push("/user/login")}
                 >
-                  <IntlMessages id='user.login-button' />
+                  <IntlMessages id="user.login-button" />
                 </Button>
               </div>
-              <div style={success ? { display: 'block' } : { display: 'none' }}>
-                <div style={{ color: 'green', fontSize: '18px' }}>
-                  <IntlMessages id='user.email-validation-message' />
+              <div style={success ? { display: "block" } : { display: "none" }}>
+                <div style={{ color: "green", fontSize: "18px" }}>
+                  <IntlMessages id="user.email-validation-message" />
                 </div>
                 <p
                   style={{
-                    fontSize: '15px',
-                    marginTop: '15px'
+                    fontSize: "15px",
+                    marginTop: "15px",
                   }}
                 >
-                  <IntlMessages id='user.admin-validation-message' />
+                  <IntlMessages id="user.admin-validation-message" />
                 </p>
               </div>
             </div>
-            <div className='form-side'>
-              <CardTitle className='mb-4'>
-                <IntlMessages id='user.register' />
+            <div className="form-side">
+              <CardTitle className="mb-4">
+                <IntlMessages id="user.register" />
               </CardTitle>
               <Label>
-                <IntlMessages id='user.identificator' />
+                <IntlMessages id="user.identificator" />
               </Label>
               <Input
                 value={identificator}
-                onChange={e => {
+                onChange={(e) => {
                   this.handelChange(
-                    e.target.value.replace(/\s/g, ''),
-                    'identificator',
+                    e.target.value.replace(/\s/g, ""),
+                    "identificator",
                     () =>
                       this.lenghtValidator(
-                        e.target.value.replace(/\s/g, ''),
-                        'identificator',
+                        e.target.value.replace(/\s/g, ""),
+                        "identificator",
                         8,
                         20
                       )
@@ -172,69 +188,84 @@ class Register extends Component {
                 }}
               />
               {errors.identificator && (
-                <div className='invalid-feedback d-block'>
+                <div className="invalid-feedback d-block">
                   {errors.identificator}
                 </div>
               )}
-              <Label className='mt-4'>
-                <IntlMessages id='user.email' />
+              <Label className="mt-4">
+                <IntlMessages id="user.email" />
               </Label>
               <Input
                 value={email}
-                onChange={e => {
-                  this.handelChange(e.target.value, 'email', () =>
+                onChange={(e) => {
+                  this.handelChange(e.target.value, "email", () =>
                     this.mailValidator(e.target.value)
                   );
                 }}
               />
               {errors.email && (
-                <div className='invalid-feedback d-block'>{errors.email}</div>
+                <div className="invalid-feedback d-block">{errors.email}</div>
               )}
-              <Label className='mt-4'>
-                <IntlMessages id='user.password' />
+
+              <Label className="mt-4">Profile</Label>
+              <Select
+                components={{ Input: CustomSelectInput }}
+                className="react-select"
+                classNamePrefix="react-select"
+                name="form-field-name"
+                value={this.selectedValue(role)}
+                onChange={(selected) => {
+                  this.handelChange(selected.value, "role");
+                }}
+                options={PROFILE}
+              />
+
+              <Label className="mt-4">
+                <IntlMessages id="user.password" />
               </Label>
               <Input
-                type='password'
+                type="password"
                 value={password}
-                onChange={e => {
-                  this.handelChange(e.target.value, 'password', () =>
-                    this.lenghtValidator(e.target.value, 'password', 10, 30)
+                onChange={(e) => {
+                  this.handelChange(e.target.value, "password", () =>
+                    this.lenghtValidator(e.target.value, "password", 10, 30)
                   );
                 }}
               />
               {errors.password && (
-                <div className='invalid-feedback d-block'>
+                <div className="invalid-feedback d-block">
                   {errors.password}
                 </div>
               )}
-              <Label className='mt-4'>
-                <IntlMessages id='user.confirmPassword' />
+              <Label className="mt-4">
+                <IntlMessages id="user.confirmPassword" />
               </Label>
               <Input
-                type='password'
+                type="password"
                 value={confirmPassword}
-                onChange={e => {
-                  this.handelChange(e.target.value, 'confirmPassword', () =>
+                onChange={(e) => {
+                  this.handelChange(e.target.value, "confirmPassword", () =>
                     this.matchPasswordValidator(e.target.value)
                   );
                 }}
               />
               {errors.confirmPassword && (
-                <div className='invalid-feedback d-block'>
+                <div className="invalid-feedback d-block">
                   {errors.confirmPassword}
                 </div>
               )}
               <div
-                className='d-flex justify-content-end align-items-center'
+                className="d-flex justify-content-end align-items-center"
                 style={{ marginTop: 15 }}
               >
                 <Button
-                  color='primary'
-                  className='btn-shadow'
-                  size='lg'
-                  onClick={() => this.submitUser()}
+                  color="primary"
+                  className="btn-shadow"
+                  size="lg"
+                  onClick={() => this.register()}
+                  disabled={JSON.stringify(errors) !== "{}"}
                 >
-                  <IntlMessages id='user.register-button' />
+                  <IntlMessages id="user.register-button" />
                 </Button>
               </div>
             </div>
@@ -251,5 +282,5 @@ const mapStateToProps = ({ authUser }) => {
 };
 
 export default connect(mapStateToProps, {
-  systemNotif
+  systemNotif,
 })(Register);

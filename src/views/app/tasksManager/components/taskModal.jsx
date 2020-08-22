@@ -16,7 +16,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import Select from "react-select";
 
-import Moment from 'moment'
+import Moment from "moment";
 
 import CustomSelectInput from "../../../../components/common/CustomSelectInput";
 
@@ -26,16 +26,18 @@ import { systemNotif, fetchTasks } from "../../../../redux/actions";
 import { actionsEnum, typesEnum } from "../../../../redux/notifications/enums";
 import { objectEquals } from "../../helpers/data.helpers";
 
-import { updateTask } from '../../../../api/tasks'
- 
+import { updateTask, deleteTask } from "../../../../api/tasks";
+import { Fab, Grid } from "@material-ui/core";
+
+import { DeleteSharp } from "@material-ui/icons";
+
 class CreateTaskForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       task: this.props.item,
       exposedTask: this.props.item,
-      errors: {
-      },
+      errors: {},
     };
   }
 
@@ -62,24 +64,21 @@ class CreateTaskForm extends React.Component {
   };
 
   submit = async () => {
-    const {
-      errors,
-      exposedTask,
-    } = this.state;
+    const { errors, exposedTask } = this.state;
 
     if (JSON.stringify(errors) !== "{}") return;
 
-    const { id } = exposedTask
+    const { id } = exposedTask;
 
     try {
-      const task = await updateTask(id,exposedTask);
+      const task = await updateTask(id, exposedTask);
       this.setState({
         task,
-        exposedTask: task
-      })
+        exposedTask: task,
+      });
 
       // update the task
-      this.props.fetchTasks()
+      this.props.fetchTasks();
 
       this.props.systemNotif(actionsEnum.PUSH, typesEnum.SUCCESS, "Updated");
 
@@ -119,13 +118,31 @@ class CreateTaskForm extends React.Component {
 
   resetChange = () => {
     this.setState({
-      exposedTask: this.state.task
-    })
-  }
+      exposedTask: this.state.task,
+    });
+  };
+
+  delete = async () => {
+
+    if(!window.confirm(" Press Ok to delete this task")){
+      return
+    }
+
+    try{
+      await deleteTask(this.state.exposedTask.id);
+      // update the task
+      this.props.fetchTasks();
+      this.props.systemNotif(actionsEnum.PUSH, typesEnum.SUCCESS, "Updated");
+
+      this.props.onClose();
+    } catch ({ status, errMessage }) {
+      this.props.systemNotif(actionsEnum.PUSH, typesEnum.ERROR, errMessage);
+    }
+  };
 
   render() {
     const { show, onClose } = this.props;
-    const { errors } = this.state
+    const { errors } = this.state;
     const {
       title,
       description,
@@ -134,7 +151,7 @@ class CreateTaskForm extends React.Component {
       deadline,
     } = this.state.exposedTask;
 
-    const isAdmin = this.havePermission()
+    const isAdmin = this.havePermission();
 
     return (
       <Modal
@@ -144,8 +161,30 @@ class CreateTaskForm extends React.Component {
         overlayClassName={"overlay"}
       >
         <ModalHeader toggle={onClose}>
-          Task details
-          
+          <Grid
+            container
+            direction={"row"}
+            alignItems="center"
+            justify="space-around"
+            style={{
+              width: "100%",
+            }}
+          >
+            <Grid item xs={isAdmin ? 10 : 12}>
+              Task details
+            </Grid>
+            <Grid item xs={2}>
+              {isAdmin && (
+                <Fab
+                  size="small"
+                  onClick={this.delete}
+                >
+                  {" "}
+                  <DeleteSharp style={{ color: "#8a2913" }} />{" "}
+                </Fab>
+              )}
+            </Grid>
+          </Grid>
         </ModalHeader>
         <ModalBody>
           <Label>Title</Label>
@@ -156,7 +195,7 @@ class CreateTaskForm extends React.Component {
                 this.lenghtValidator(e.target.value, "title", 4, 35)
               );
             }}
-            style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+            style={{ backgroundColor: "rgba(0,0,0,0)" }}
             disabled={!isAdmin}
           />
           {errors.title && (
@@ -214,7 +253,7 @@ class CreateTaskForm extends React.Component {
             type="date"
             value={Moment(deadline).format("DD / MM / yy")}
             onChange={(v) => {
-              this.handelChange(new Date(v), "deadline")
+              this.handelChange(new Date(v), "deadline");
             }}
             style={{ color: "whitesmoke" }}
             disabled={!isAdmin}
@@ -260,5 +299,5 @@ const mapStateToProps = ({ authUser }) => {
 
 export default connect(mapStateToProps, {
   systemNotif,
-  fetchTasks
+  fetchTasks,
 })(CreateTaskForm);
