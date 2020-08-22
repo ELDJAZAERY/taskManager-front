@@ -11,7 +11,12 @@ import {
   Input,
 } from "reactstrap";
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 import Select from "react-select";
+
+import Moment from 'moment'
 
 import CustomSelectInput from "../../../../components/common/CustomSelectInput";
 
@@ -19,10 +24,12 @@ import { CATEGORIES, PRIORITIES } from "../data";
 
 import { systemNotif } from "../../../../redux/actions";
 import { actionsEnum, typesEnum } from "../../../../redux/notifications/enums";
+import { createTask } from "../../../../api/tasks";
 
 class CreateTaskForm extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       title: "",
       description: "",
@@ -80,12 +87,11 @@ class CreateTaskForm extends React.Component {
     };
 
     try {
-      // const response = await addPartner(partner);
-      const message = ""
-      this.props.systemNotif(actionsEnum.PUSH, typesEnum.SUCCESS, message);
+      const response = await createTask(task);
+      
+      this.props.systemNotif(actionsEnum.PUSH, typesEnum.SUCCESS, "Task created");
 
-      this.props.dataListRender();
-      this.props.toggleModal();
+      this.props.onClose();
     } catch ({ status, errMessage }) {
       this.props.systemNotif(actionsEnum.PUSH, typesEnum.ERROR, errMessage);
     }
@@ -165,12 +171,13 @@ class CreateTaskForm extends React.Component {
           />
 
           <Label className="mt-4">Deadline</Label>
-          <Input
+          <DatePicker
             type="date"
-            value={deadline}
-            onChange={(e) => {
-              this.handelChange(e.target.value, "deadline");
+            value={Moment(deadline).format("DD / MM / yy")}
+            onChange={(v) => {
+              this.handelChange(new Date(v), "deadline")
             }}
+            style={{ color: "whitesmoke" }}
           />
 
           <Label className="mt-4">Description</Label>
@@ -185,7 +192,6 @@ class CreateTaskForm extends React.Component {
               this.handelChange(e.target.value, "description");
             }}
           />
-
         </ModalBody>
         <ModalFooter>
           <Button color="secondary" outline onClick={onClose}>
@@ -194,7 +200,7 @@ class CreateTaskForm extends React.Component {
           <Button
             color="primary"
             disabled={!(JSON.stringify(errors) === "{}")}
-            onClick={this.submitPartner}
+            onClick={this.submit}
           >
             Submit
           </Button>{" "}

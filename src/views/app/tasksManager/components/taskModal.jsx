@@ -1,5 +1,5 @@
 import React from "react";
-import { connect, ReactReduxContext } from "react-redux";
+import { connect } from "react-redux";
 
 import {
   Button,
@@ -11,16 +11,23 @@ import {
   Input,
 } from "reactstrap";
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 import Select from "react-select";
+
+import Moment from 'moment'
 
 import CustomSelectInput from "../../../../components/common/CustomSelectInput";
 
 import { CATEGORIES, PRIORITIES } from "../data";
 
-import { systemNotif } from "../../../../redux/actions";
+import { systemNotif, fetchTasks } from "../../../../redux/actions";
 import { actionsEnum, typesEnum } from "../../../../redux/notifications/enums";
 import { objectEquals } from "../../helpers/data.helpers";
 
+import { updateTask } from '../../../../api/tasks'
+ 
 class CreateTaskForm extends React.Component {
   constructor(props) {
     super(props);
@@ -57,30 +64,26 @@ class CreateTaskForm extends React.Component {
   submit = async () => {
     const {
       errors,
-      title,
-      description,
-      category,
-      priority,
-      deadline,
+      exposedTask,
     } = this.state;
 
     if (JSON.stringify(errors) !== "{}") return;
 
-    const task = {
-      title,
-      description,
-      category,
-      priority,
-      deadline,
-    };
+    const { id } = exposedTask
 
     try {
-      // const response = await addPartner(partner);
-      const message = "";
-      this.props.systemNotif(actionsEnum.PUSH, typesEnum.SUCCESS, message);
+      const task = await updateTask(id,exposedTask);
+      this.setState({
+        task,
+        exposedTask: task
+      })
 
-      this.props.dataListRender();
-      this.props.toggleModal();
+      // update the task
+      this.props.fetchTasks()
+
+      this.props.systemNotif(actionsEnum.PUSH, typesEnum.SUCCESS, "Updated");
+
+      this.props.onClose();
     } catch ({ status, errMessage }) {
       this.props.systemNotif(actionsEnum.PUSH, typesEnum.ERROR, errMessage);
     }
@@ -103,7 +106,6 @@ class CreateTaskForm extends React.Component {
   isUpdated = () => {
     const { task: originalOne, exposedTask, errors } = this.state;
 
-    console.log(errors)
     return (
       !objectEquals(exposedTask, originalOne) && JSON.stringify(errors) === "{}"
     );
@@ -114,6 +116,12 @@ class CreateTaskForm extends React.Component {
       return true;
     return false;
   };
+
+  resetChange = () => {
+    this.setState({
+      exposedTask: this.state.task
+    })
+  }
 
   render() {
     const { show, onClose } = this.props;
@@ -135,7 +143,10 @@ class CreateTaskForm extends React.Component {
         toggle={onClose}
         overlayClassName={"overlay"}
       >
-        <ModalHeader toggle={onClose}>Create Task</ModalHeader>
+        <ModalHeader toggle={onClose}>
+          Task details
+          
+        </ModalHeader>
         <ModalBody>
           <Label>Title</Label>
           <Input
@@ -199,13 +210,13 @@ class CreateTaskForm extends React.Component {
           )}
 
           <Label className="mt-4">Deadline</Label>
-          <Input
-            type={"date"}
-            value={deadline}
-            onChange={(e) => {
-              this.handelChange(e.target.value, "deadline");
+          <DatePicker
+            type="date"
+            value={Moment(deadline).format("DD / MM / yy")}
+            onChange={(v) => {
+              this.handelChange(new Date(v), "deadline")
             }}
-            style={{ backgroundColor: 'rgba(0,0,0,0)' }}
+            style={{ color: "whitesmoke" }}
             disabled={!isAdmin}
           />
 
@@ -225,13 +236,13 @@ class CreateTaskForm extends React.Component {
         </ModalBody>
         {this.isUpdated() && (
           <ModalFooter>
-            <Button color="secondary" outline onClick={onClose}>
-              Cancel
+            <Button color="secondary" outline onClick={this.resetChange}>
+              Reset
             </Button>
             <Button
               color="primary"
               disabled={!(JSON.stringify(errors) === "{}")}
-              onClick={this.submitPartner}
+              onClick={this.submit}
             >
               Submit
             </Button>{" "}
@@ -249,4 +260,5 @@ const mapStateToProps = ({ authUser }) => {
 
 export default connect(mapStateToProps, {
   systemNotif,
+  fetchTasks
 })(CreateTaskForm);

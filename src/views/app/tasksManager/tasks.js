@@ -9,11 +9,20 @@ import Homepage from "./pages/Homepage";
 import { DndProvider } from "react-dnd";
 import Backend from "react-dnd-html5-backend";
 
+import { fetchTasks } from "../../../redux/actions";
+
 import "./style/index.css";
 
 class Page extends Component {
+  loopId = undefined;
+
   componentDidMount() {
     this.onFetchData();
+    const id = setInterval(() => {
+      this.onFetchData();
+    }, 3000);
+
+    this.loopId = id;
   }
 
   componentDidUpdate() {
@@ -37,17 +46,22 @@ class Page extends Component {
     this.onClearData();
   }
 
-  onFetchData = () => {};
+  onFetchData = () => {
+    this.props.fetchTasks && this.props.fetchTasks();
+  };
 
-  onClearData = () => {};
+  onClearData = () => {
+    clearInterval(this.loopId);
+  };
 
   render() {
+
     return (
       <Fragment>
         <Row>
           <Colxx xxs="12" className="mb-4">
             <DndProvider backend={Backend}>
-              <Homepage />
+              <Homepage tasks={this.props.tasks} fetchTasks={this.props.fetchTasks} />
             </DndProvider>
           </Colxx>
         </Row>
@@ -56,6 +70,10 @@ class Page extends Component {
   }
 }
 
-const mapStateToProps = (state) => {};
+const mapStateToProps = (state) => {
+  return { tasks: state.taskManager.tasks };
+};
 
-export default connect(mapStateToProps, {})(Page);
+export default connect(mapStateToProps, {
+  fetchTasks,
+})(Page);

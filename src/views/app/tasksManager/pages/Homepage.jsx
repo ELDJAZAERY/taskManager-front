@@ -1,28 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Item from "../components/Item";
 import DropWrapper from "../components/DropWrapper";
 import Col from "../components/Col";
-import { data, statuses } from "../data";
+import { statuses } from "../data";
+import { updateStatus } from "../../../../api/tasks";
 
-const Homepage = () => {
-  const [items, setItems] = useState(data);
+const Homepage = ({ tasks, fetchTasks = () => {
+  console.log(" khortiiii ")
+} }) => {
+  const [items, setItems] = useState([]);
 
-  const onDrop = (item, monitor, status) => {
+  useEffect(() => {
+    setItems(tasks);
+  }, [tasks]);
+
+  const onDrop = async (item, monitor, status) => {
     setItems((prevState) => {
       const newItems = prevState
         .filter((i) => i.id !== item.id)
         .concat({ ...item, status });
+        console.log(" new Items onDrop ", newItems)
       return [...newItems];
     });
-  };
-
-  const moveItem = (dragIndex, hoverIndex) => {
-    const item = items[dragIndex];
-    setItems((prevState) => {
-      const newItems = prevState.filter((i, idx) => idx !== dragIndex);
-      newItems.splice(hoverIndex, 0, item);
-      return [...newItems];
-    });
+    await updateStatus(item.id, status);
+    fetchTasks()
   };
 
   return (
@@ -40,7 +41,7 @@ const Homepage = () => {
                       key={i.id}
                       item={i}
                       index={idx}
-                      moveItem={moveItem}
+                      moveItem={() => {}}
                       status={s}
                     />
                   ))}

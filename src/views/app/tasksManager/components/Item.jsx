@@ -138,7 +138,7 @@ export const TaskCard = ({ item, status }) => {
               style={{ float: "right" }}
               gutterBottom
             >
-              {Moment(new Date()).format("DD-MM-YYYY")}
+              {Moment(item.deadline).format("DD-MM-YYYY")}
             </Typography>
           </Grid>
         </Grid>

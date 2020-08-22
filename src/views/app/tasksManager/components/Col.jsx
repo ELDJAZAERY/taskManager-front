@@ -16,7 +16,7 @@ const Col = ({ status, isOver, children, connectedUser }) => {
 
   if (
     status &&
-    status.status === "Backlog" &&
+    status.status === "In Backlog" &&
     connectedUser &&
     connectedUser.role === "Admin"
   )
