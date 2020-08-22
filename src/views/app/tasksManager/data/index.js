@@ -69,8 +69,8 @@ const CATEGORIES = [
   { label: "Web", value: "Web", key: 1 },
   { label: "Mobile", value: "Mobile", key: 2 },
   { label: "Data", value: "Data", key: 3 },
-  { label: "Audit", value: "Audit", key: 3 },
-  { label: "Finance", value: "Finance", key: 3 },
+  { label: "Audit", value: "Audit", key: 4 },
+  { label: "Finance", value: "Finance", key: 5 },
 ];
 
 const PRIORITIES = [

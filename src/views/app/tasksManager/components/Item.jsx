@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import Window from "./Window";
+import TaskModal from "./taskModal";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -73,7 +73,7 @@ const Item = ({ item, index, moveItem, status }) => {
       >
         <TaskCard item={item} status={status} />
       </div>
-      <Window item={item} onClose={onClose} show={show} />
+      <TaskModal item={item} onClose={onClose} show={show} />
     </Fragment>
   );
 };
