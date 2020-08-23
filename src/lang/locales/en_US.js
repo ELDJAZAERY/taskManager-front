@@ -82,5 +82,5 @@ module.exports = {
 
   "user.email-validation-message":
     "If you do not receive a confirmation email, please check your spam folder.",
-  "user.admin-validation-message": "",
+  "user.admin-validation-message": " ",
 };
