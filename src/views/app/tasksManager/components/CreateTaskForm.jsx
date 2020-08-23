@@ -16,7 +16,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import Select from "react-select";
 
-import Moment from 'moment'
+import Moment from "moment";
 
 import CustomSelectInput from "../../../../components/common/CustomSelectInput";
 
@@ -26,22 +26,24 @@ import { systemNotif } from "../../../../redux/actions";
 import { actionsEnum, typesEnum } from "../../../../redux/notifications/enums";
 import { createTask } from "../../../../api/tasks";
 
+const initialState = {
+  title: "",
+  description: "",
+  category: "",
+  priority: "",
+  deadline: new Date(),
+  errors: {
+    title: "",
+    category: "",
+    priority: "",
+  },
+};
+
 class CreateTaskForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      title: "",
-      description: "",
-      category: "",
-      priority: "",
-      deadline: new Date(),
-      errors: {
-        title: "",
-        category: "",
-        priority: "",
-      },
-    };
+    this.state = initialState;
   }
 
   handelChange = (value, tag, validateFunc = () => {}) => {
@@ -88,9 +90,17 @@ class CreateTaskForm extends React.Component {
 
     try {
       const response = await createTask(task);
-      
-      this.props.systemNotif(actionsEnum.PUSH, typesEnum.SUCCESS, "Task created");
 
+      this.props.systemNotif(
+        actionsEnum.PUSH,
+        typesEnum.SUCCESS,
+        "Task created"
+      );
+
+      this.setState({
+        state: initialState
+      })
+      
       this.props.onClose();
     } catch ({ status, errMessage }) {
       this.props.systemNotif(actionsEnum.PUSH, typesEnum.ERROR, errMessage);
@@ -175,7 +185,7 @@ class CreateTaskForm extends React.Component {
             type="date"
             value={Moment(deadline).format("DD / MM / yy")}
             onChange={(v) => {
-              this.handelChange(new Date(v), "deadline")
+              this.handelChange(new Date(v), "deadline");
             }}
             style={{ color: "whitesmoke" }}
           />
