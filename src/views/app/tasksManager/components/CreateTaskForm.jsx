@@ -98,10 +98,12 @@ class CreateTaskForm extends React.Component {
       );
 
       this.setState({
-        state: initialState
-      })
-      
+        state: initialState,
+      });
+
+      this.props.fetchTasks && this.props.fetchTasks();
       this.props.onClose();
+      
     } catch ({ status, errMessage }) {
       this.props.systemNotif(actionsEnum.PUSH, typesEnum.ERROR, errMessage);
     }

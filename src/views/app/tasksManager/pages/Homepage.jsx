@@ -5,9 +5,7 @@ import Col from "../components/Col";
 import { statuses } from "../data";
 import { updateStatus } from "../../../../api/tasks";
 
-const Homepage = ({ tasks, fetchTasks = () => {
-  console.log(" khortiiii ")
-} }) => {
+const Homepage = ({ tasks, fetchTasks = () => {} }) => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -33,7 +31,7 @@ const Homepage = ({ tasks, fetchTasks = () => {
           <div key={index} className={"col-wrapper"}>
             <h2 className={"col-header"}>{s.status.toUpperCase()}</h2>
             <DropWrapper onDrop={onDrop} status={s.status}>
-              <Col status={s}>
+              <Col status={s} fetchTasks={fetchTasks}>
                 {items
                   .filter((i) => i.status === s.status)
                   .map((i, idx) => (

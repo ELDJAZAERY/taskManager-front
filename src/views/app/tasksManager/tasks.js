@@ -20,7 +20,7 @@ class Page extends Component {
     this.onFetchData();
     const id = setInterval(() => {
       this.onFetchData();
-    }, 3000);
+    }, 2000);
 
     this.loopId = id;
   }

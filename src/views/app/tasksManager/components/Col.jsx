@@ -5,7 +5,7 @@ import { Add } from "@material-ui/icons";
 
 import CreateTaskForm from './CreateTaskForm'
 
-const Col = ({ status, isOver, children, connectedUser }) => {
+const Col = ({ status, isOver, children, connectedUser, fetchTasks }) => {
   const className = isOver ? " highlight-region" : "";
 
   const [show, setShow] = useState(false);
@@ -33,7 +33,7 @@ const Col = ({ status, isOver, children, connectedUser }) => {
 
           {children}
         </div>
-        <CreateTaskForm onClose={onClose} show={show} />
+        <CreateTaskForm onClose={onClose} show={show} fetchTasks={fetchTasks}/>
       </React.Fragment>
     );
 
