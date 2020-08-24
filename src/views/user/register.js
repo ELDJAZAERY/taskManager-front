@@ -173,6 +173,7 @@ class Register extends Component {
               </Label>
               <Input
                 value={identificator}
+                spellcheck="false"
                 onChange={(e) => {
                   this.handelChange(
                     e.target.value.replace(/\s/g, ""),
@@ -197,6 +198,7 @@ class Register extends Component {
               </Label>
               <Input
                 value={email}
+                spellcheck="false"
                 onChange={(e) => {
                   this.handelChange(e.target.value, "email", () =>
                     this.mailValidator(e.target.value)

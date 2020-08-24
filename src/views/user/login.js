@@ -83,6 +83,7 @@ class Login extends Component {
                       </Label>
                       <Field
                         className='form-control'
+                        spellcheck="false"
                         name='Identificator'
                         validate={this.validateEmail}
                       />

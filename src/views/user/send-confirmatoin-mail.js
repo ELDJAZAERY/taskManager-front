@@ -119,6 +119,7 @@ class SendConfirmationMail extends Component {
               </Label>
               <Input
                 value={email}
+                spellcheck="false"
                 onChange={e => {
                   !loading &&
                     this.handelChange(e.target.value, 'email', () =>

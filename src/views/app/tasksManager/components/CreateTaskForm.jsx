@@ -146,6 +146,7 @@ class CreateTaskForm extends React.Component {
           <Label>Title</Label>
           <Input
             value={title}
+            spellcheck="false"
             onChange={(e) => {
               this.handelChange(e.target.value, "title", () =>
                 this.lenghtValidator(e.target.value, "title", 4, 35)
@@ -196,6 +197,7 @@ class CreateTaskForm extends React.Component {
           <Input
             type="textarea"
             value={description}
+            spellcheck="false"
             style={{
               backgroundColor: "rgba(0,0,0,0)",
               minHeight: "13vw",
