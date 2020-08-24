@@ -23,7 +23,7 @@ const Homepage = ({ tasks, fetchTasks = () => {}}) => {
         console.log(" new Items onDrop ", newItems)
       return [...newItems];
     });
-    setIgnore(1)
+    setIgnore(2)
     await updateStatus(item.id, status);
     fetchTasks()
   };
