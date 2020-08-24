@@ -20,7 +20,6 @@ const Homepage = ({ tasks, fetchTasks = () => {}}) => {
       const newItems = prevState
         .filter((i) => i.id !== item.id)
         .concat({ ...item, status });
-        console.log(" new Items onDrop ", newItems)
       return [...newItems];
     });
     setIgnore(2)

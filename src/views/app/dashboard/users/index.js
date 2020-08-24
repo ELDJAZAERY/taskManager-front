@@ -165,13 +165,7 @@ class DataListPages extends Component {
     return false;
   };
 
-  onContextMenuClick = (e, data, target) => {
-    console.log(
-      'onContextMenuClick - selected items',
-      this.state.connectedPartners
-    );
-    console.log('onContextMenuClick - action : ', data.action);
-  };
+  onContextMenuClick = (e, data, target) => {};
 
   onContextMenu = (e, data) => {
     const clickedProductId = data.data;
