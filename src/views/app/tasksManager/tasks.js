@@ -55,13 +55,15 @@ class Page extends Component {
   };
 
   render() {
-
     return (
       <Fragment>
         <Row>
           <Colxx xxs="12" className="mb-4">
             <DndProvider backend={Backend}>
-              <Homepage tasks={this.props.tasks} fetchTasks={this.props.fetchTasks} />
+                <Homepage
+                  tasks={this.props.tasks}
+                  fetchTasks={this.props.fetchTasks}
+                />
             </DndProvider>
           </Colxx>
         </Row>
